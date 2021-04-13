@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Donate to Tilt!</title>
+  </head>
+  <body>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-sm-6">
+          <p>This is an example of a simple working donatation page.</p>
+          <p>Any donations sent through this page will go towards the future development of the Tilt platform.</p>
+        </div>
+        <div class="col-sm-6">
+
+          <div class="card" id="card-edit">
+
+            <div class="card-header">
+            Donate to the Tilt project.
+            </div>
+
+            <div class="card-body">
+              <a id="txt-address" class="d-none"></a>
+              <div class="input-group">
+                <select id="sel-currency" class="form-control">
+                  <option value="btc">Bitcoin (BTC)</option>
+                  <option value="ltc">Litecoin (LTC)</option>
+                  <option value="doge">Dogecoin (DOGE)</option>
+                  <option value="tdoge">Dogecoin Testnet (TDOGE)</option>
+                </select>
+                <div class="input-group-append">
+                  <button id="btn-donate" class="btn btn-primary">Donate now!</button>
+                </div>
+              </div>
+              <small id="lbl-help" class="form-text text-muted">Select the currency you want to donate.</small>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://tilt.cash/js/tilt.min.js" data-tilt-wallet-id="607440aad1997c17fd00001e" crossorigin="anonymous"></script>
+    <script>
+      $('#btn-donate').click(function() {
+        var currency = $('#sel-currency :selected').val();
+        var meta = {
+          'type': 'donation',
+          'reason': 'tilt development',
+          'source': 'donation example'
+        };
+        $('#lbl-help').text("Generating a new address, one second ...");
+        $('#sel-currency').hide();
+        $('#btn-donate').hide();
+        TILT.create_address(currency, meta, function(res) {
+          if (res['ok']) {
+            $('#txt-address').text(res['address']);
+            $('#txt-address').removeClass('d-none');
+            $('#lbl-help').text("Please send your donation to the above " +
+              currency.toUpperCase() + " address.")
+          } else {
+            alert("Something went wrong, please try again later.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
