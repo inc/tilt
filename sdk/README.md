@@ -59,7 +59,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"wallet":1234,"currency":"
 Retrieve amount received by this wallet. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
 
 ```
-curl https://tilt.cash/api/v1/received_wallet?currency=btc&address=abcd&confs=1&apikey=1234
+curl https://tilt.cash/api/v1/received_wallet?currency=btc&confs=1&apikey=1234
 ```
 
 ->
