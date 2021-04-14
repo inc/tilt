@@ -158,7 +158,7 @@ $ tilt ping
 
 This command creates a new address and private key for the specified currency and stores them in your wallet. The private key is stored encrypted using your wallet key. The address is also registered with the Tilt service so that you will receive transaction notifications.
 
-You can optionally include a label that will assign the address to a separate wallet namespace. The total amount received of labelled addresses is not be reflected by the `tilt received` command and instead you must use either the `tilt received-label` or `tilt received-address` command.
+You can optionally include a label that will assign the address to a separate wallet namespace. The total amount received of labelled addresses is not reflected by the `tilt received` command and instead you must use either the `tilt received-label` or `tilt received-address` command.
 
 ```
 $ tilt create <currency> [label]
