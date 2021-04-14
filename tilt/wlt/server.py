@@ -97,9 +97,12 @@ class WalletService():
         if (req['method'] == 'create_address'):
             currency = req['args']['currency']
             meta = None
+            label = None
             if 'meta' in req['args']:
                 meta = req['args']['meta']
-            address = self.wm.create(currency, meta)
+            if 'label' in req['args']:
+                label = req['args']['label']
+            address = self.wm.create(currency, meta, label)
             self.rpcres(req['id'], { 'address': address })
 
     def rpcres(self, rpcid, args):

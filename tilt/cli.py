@@ -39,6 +39,7 @@ class TiltCLI:
             'destroy': self.do_destroy,
             'received': self.do_received_wallet,
             'received-address': self.do_received_address,
+            'received-label': self.do_received_label,
             'quote': self.do_quote,
         }
         self.parse_args()
@@ -78,6 +79,7 @@ class TiltCLI:
             help="Create a new address and private key.")
 
         sp_wallet_create.add_argument("currency")
+        sp_wallet_create.add_argument("label", nargs='?')
 
         sp_wallet_show = sp.add_parser("show",
             help="Display private key and metadata for this address.")
@@ -107,6 +109,12 @@ class TiltCLI:
         sp_received_address.add_argument("currency")
         sp_received_address.add_argument("address")
         sp_received_address.add_argument("confs", nargs='?')
+
+        sp_received_label = sp.add_parser("received-label",
+            help="Display total amount received with this label.")
+        sp_received_label.add_argument("currency")
+        sp_received_label.add_argument("label")
+        sp_received_label.add_argument("confs", nargs='?')
 
         sp_quote = sp.add_parser("quote",
             help="Get a price quote for the specified symbol.")
@@ -188,7 +196,7 @@ class TiltCLI:
         if not self.args.currency:
             print("currency not specified; exiting")
             exit(1)
-        tilt.create_address(self.args.currency)
+        tilt.create_address(self.args.currency, self.args.label)
 
     def do_wallet_show(self):
         if not self.args.currency:
@@ -232,6 +240,16 @@ class TiltCLI:
             print("address not specified; exiting")
             exit(1)
         tilt.received_address(self.args.currency, self.args.address,
+            self.args.confs)
+
+    def do_received_label(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        if not self.args.label:
+            print("label not specified; exiting")
+            exit(1)
+        tilt.received_label(self.args.currency, self.args.label,
             self.args.confs)
 
     def do_quote(self):

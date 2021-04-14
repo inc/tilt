@@ -29,17 +29,17 @@ def ping():
     except:
         logging.error("request failed; is tiltwlt running?")
 
-def create_address(currency):
+def create_address(currency, label):
     req = {
         'wallet': get_config("wallet_id"),
         'currency': currency
     }
+    if label: req['label'] = label
     r = requests.post('https://tilt.cash/api/v1/create_address', json=req)
     try:
         logging.info(r.json())
     except:
         logging.error("request failed; is tiltwlt running?")
-
 
 def received_wallet(currency, confs):
     req = {
@@ -61,6 +61,20 @@ def received_address(currency, address, confs):
     }
     if confs: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/received_address', json=req)
+    try:
+        logging.info(r.json())
+    except:
+        logging.error("request failed; is tiltwlt running?")
+
+def received_label(currency, label, confs):
+    req = {
+        'wallet': get_config("wallet_id"),
+        'api_key': get_config("api_key"),
+        'currency': currency,
+        'label': label
+    }
+    if confs: req['confs'] = int(confs)
+    r = requests.post('https://tilt.cash/api/v1/received_label', json=req)
     try:
         logging.info(r.json())
     except:

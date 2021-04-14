@@ -30,7 +30,7 @@ class WalletManager:
         return
 
     # create a new address/key pair, return the new address
-    def create(self, currency, meta):
+    def create(self, currency, meta, label):
 
         k = Key(network=self.currency_to_network(currency))
 
@@ -44,6 +44,7 @@ class WalletManager:
             'address': address,
             'cipher_wif': wif_cipher_bytes,
             'meta': meta,
+            'label': label,
             'ts': int(time.time())
         }
 

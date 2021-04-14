@@ -54,6 +54,22 @@ curl -X POST -H "Content-Type: application/json" -d '{"wallet":1234,"currency":"
 {"address": "...", "ok": true}
 ```
 
+#### Create a Labelled Address
+
+The create\_address methods support an optional "label" field that can be used to create an unlimited number of separate wallet namespaces. Using a label such as "<mysite>\_<userid>" will allow you to create a per-site per-user wallet namespace. The namespace is unique to the specified wallet and can contain any alpha-numeric characters plus underscores.
+
+Note: You must use either the received\_label or received\_address method to get the total amount received by labelled addresses. The total amount received by labelled addresses will *not* be reflected by received\_wallet.
+
+```
+curl -X GET https://tilt.cash/api/v1/create_address?currency=btc&wallet=1234&label=mysite_user12345
+```
+
+->
+
+```
+{"address": "...", "ok": true}
+```
+
 #### Get Amount Received by Wallet
 
 Retrieve amount received by this wallet. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
@@ -83,6 +99,20 @@ curl https://tilt.cash/api/v1/received_address?currency=btc&address=abcd&confs=1
 {"received": 0.1234, "ok": true}
 ```
 
+#### Get Amount Received by Label
+
+Retrieve the amount received with this label. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
+
+```
+curl https://tilt.cash/api/v1/received_label?currency=btc&wallet=1234&label=mysite_user12345&confs=60&apikey=1234
+```
+
+->
+
+```
+{"received": 0.0054321, "ok": true}
+```
+
 #### Request a Price Quote
 
 The quote method allows you to get a real-time quote for the exchange rate between different currencies.
@@ -103,6 +133,7 @@ GET https://tilt.cash/api/v1/quote?sym=btcusd
 TILT.set_wallet_id(wallet_id)
 TILT.create_address(currency, callback(res))
 TILT.create_address(currency, meta, callback(res))
+TILT.create_address(currency, meta, label, callback(res))
 TILT.received_address(wallet, currency, address, callback(res))
 TILT.quote(symbol, callback(res))
 TILT.ping(wallet, callback(res))
@@ -114,7 +145,9 @@ TILT.ping(wallet, callback(res))
 import tilt.utils as tilt
 tilt.create_address(currency)
 tilt.create_address(currency, meta)
+tilt.create_address(currency, meta, label)
 tilt.received_wallet(wallet, currency)
 tilt.received_address(wallet, currency, address)
+tilt.received_label(wallet, currency, label)
 tilt.quote(symbol)
 ```
