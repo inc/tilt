@@ -158,11 +158,13 @@ $ tilt ping
 
 This command creates a new address and private key for the specified currency and stores them in your wallet. The private key is stored encrypted using your wallet key. The address is also registered with the Tilt service so that you will receive transaction notifications.
 
+You can optionally include a label that will assign the address to a separate wallet namespace. The total amount received of labelled addresses is not be reflected by the `tilt received` command and instead you must use either the `tilt received-label` or `tilt received-address` command.
+
 ```
-$ tilt create <currency>
+$ tilt create <currency> [label]
 ```
 
-### Get Received (Wallet)
+### Display Amount Received (Wallet)
 
 This command displays the total amount received by your wallet for the specified currency. You can optionally specify the number of confirmations required for a transaction to be included in the total amount received.
 
@@ -170,7 +172,7 @@ This command displays the total amount received by your wallet for the specified
 $ tilt received <currency> [confirmations]
 ```
 
-### Get Received (Address)
+### Display Amount Received (Address)
 
 This command displays the total amount received by a specific address. You can optionally specify the number of confirmations required for a transaction to be included in the total amount received.
 
@@ -178,9 +180,17 @@ This command displays the total amount received by a specific address. You can o
 $ tilt received-address <currency> <addr> [confirmations]
 ```
 
+### Display Amount Received (Label)
+
+This command displays the total amount received by a specific label. You can optionally specify the number of confirmations required for a transaction to be included in the total amount received.
+
+```
+$ tilt received-label <currency> <label> [confirmations]
+```
+
 ### Display Address/Key Pair
 
-This command displays the wallet entry for the given address, including the decrypted private key and any associated metadata.
+This command displays the wallet entry for the given address, including the decrypted private key, any associated metadata and label.
 
 ```
 $ tilt show <currency> <addr>
