@@ -54,22 +54,30 @@ class WalletManager:
 
         return address
 
-    def decrypt(self, filename):
+    def load(self, filename):
         with open(filename, "r") as f:
-            w = json.loads(f.read())
+            return json.loads(f.read())
 
+    def decrypt(self, filename):
+        w = self.load(filename)
         wif_cipher_bytes = w['cipher_wif'].encode('utf-8')
         w['plain_wif'] = self.fernet.decrypt(wif_cipher_bytes).decode('utf-8')
         del w['cipher_wif']
         return w
 
-    def show(self, currency, address):
+    def exists(self, currency, address):
         fn = self.walletdir + "/" + currency + "." + address + ".json"
-        w = self.decrypt(fn)       
-        pp = pprint.PrettyPrinter()
-        pp.pprint(w)
+        return os.path.isfile(fn)
 
-    def list(self, currency):
+    def get(self, currency, address):
+        fn = self.walletdir + "/" + currency + "." + address + ".json"
+        return self.decrypt(fn)
+
+    def show(self, currency, address):
+        pp = pprint.PrettyPrinter()
+        pp.pprint(self.get(currency, address))
+
+    def list(self, currency, show_labels=False):
         if currency:
             fn = self.walletdir + "/" + currency + ".*.json"
         else:
@@ -78,9 +86,16 @@ class WalletManager:
         files = list(glob.iglob(fn))
         files.sort(key=os.path.getmtime)
 
-        for f in files:
-            fs = os.path.basename(f).split('.')
-            print(fs[0], "\t", fs[1])
+        for fn in files:
+            fs = os.path.basename(fn).split('.')
+            if show_labels:
+                with open(fn) as f:
+                    w = json.loads(f.read())
+                    label = ''
+                    if 'label' in w and w['label']: label = w['label']
+                    print(fs[0], "\t", fs[1], "\t", label)
+            else:
+                print(fs[0], "\t", fs[1])
 
     def freeze(self):
         zfn = 'tilt-freeze-' + str(int(time.time())) + '.zip'

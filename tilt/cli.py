@@ -89,6 +89,7 @@ class TiltCLI:
         sp_wallet_list = sp.add_parser("list",
             help="Display list of all addresses in this wallet.")
         sp_wallet_list.add_argument("currency", nargs='?')
+        sp_wallet_list.add_argument("--show-labels", action='store_true') 
 
         sp_wallet_freeze = sp.add_parser("freeze",
             help="Create a zip file containing decrypted wallet data.")
@@ -174,7 +175,7 @@ class TiltCLI:
             logging.info(msg)
 
     def do_ping(self):
-        tilt.ping()
+        logging.info(tilt.ping())
 
     def do_start(self):
         wsm = WalletServiceMonitor()
@@ -196,7 +197,7 @@ class TiltCLI:
         if not self.args.currency:
             print("currency not specified; exiting")
             exit(1)
-        tilt.create_address(self.args.currency, self.args.label)
+        logging.info(tilt.create_address(self.args.currency, self.args.label))
 
     def do_wallet_show(self):
         if not self.args.currency:
@@ -210,7 +211,7 @@ class TiltCLI:
 
     def do_wallet_list(self):
         wm = WalletManager()
-        wm.list(self.args.currency)
+        wm.list(self.args.currency, show_labels=self.args.show_labels)
 
     def do_freeze(self):
         wm = WalletManager()
@@ -230,7 +231,7 @@ class TiltCLI:
         if not self.args.currency:
             print("currency not specified; exiting")
             exit(1)
-        tilt.received_wallet(self.args.currency, self.args.confs)
+        logging.info(tilt.received_wallet(self.args.currency, self.args.confs))
 
     def do_received_address(self):
         if not self.args.currency:
@@ -239,8 +240,8 @@ class TiltCLI:
         if not self.args.address:
             print("address not specified; exiting")
             exit(1)
-        tilt.received_address(self.args.currency, self.args.address,
-            self.args.confs)
+        logging.info(tilt.received_address(self.args.currency,
+            self.args.address, self.args.confs))
 
     def do_received_label(self):
         if not self.args.currency:
@@ -249,14 +250,14 @@ class TiltCLI:
         if not self.args.label:
             print("label not specified; exiting")
             exit(1)
-        tilt.received_label(self.args.currency, self.args.label,
-            self.args.confs)
+        logging.info(tilt.received_label(self.args.currency, self.args.label,
+            self.args.confs))
 
     def do_quote(self):
         if not self.args.sym:
             print("sym not specified; exiting")
             exit(1)
-        tilt.quote(self.args.sym)
+        logging.info(tilt.quote(self.args.sym))
 
     def do_help(self):
         self.parser.print_help()
