@@ -86,6 +86,9 @@ Tilt maintains a directory inside your home directory at ~/.tilt.
  - Q: Who operates Tilt?
  - A: Tilt is a service provided by [Lone Dynamics Corporation](https://lonedynamics.com).
 
+ - Q: What license does Tilt use?
+ - A: Tilt is released under the [Lone Dynamics Open License](LICENSE.md) which is substantially similar to the BSD 1-Clause license.
+
 ## Security
 
 Hot wallets are potentially vulnerable to attacks from hackers and it is not recommended to store private keys on computers connected to the Internet longer than necessary.
