@@ -75,7 +75,7 @@ curl -X GET https://tilt.cash/api/v1/create_address?currency=btc&wallet=1234&lab
 Retrieve the amount unspent for this wallet, including labelled and unlabelled addresses. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
 
 ```
-curl https://tilt.cash/api/v1/balance_wallet?currency=btc&confs=1&apikey=1234
+curl https://tilt.cash/api/v1/balance_wallet?wallet=1234&currency=btc&confs=1&apikey=1234
 ```
 
 ->
@@ -120,7 +120,7 @@ Retrieve amount received by this wallet. Optionally specify the minimum number o
 Note: Unlike the balance\_wallet method, labelled addresses are *not* included in this total.
 
 ```
-curl https://tilt.cash/api/v1/received_wallet?currency=btc&confs=1&apikey=1234
+curl https://tilt.cash/api/v1/received_wallet?wallet=1234&currency=btc&confs=1&apikey=1234
 ```
 
 ->
