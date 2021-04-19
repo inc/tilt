@@ -70,9 +70,54 @@ curl -X GET https://tilt.cash/api/v1/create_address?currency=btc&wallet=1234&lab
 {"address": "...", "ok": true}
 ```
 
+#### Get Balance by Wallet
+
+Retrieve the amount unspent for this wallet, including labelled and unlabelled addresses. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
+
+```
+curl https://tilt.cash/api/v1/balance_wallet?currency=btc&confs=1&apikey=1234
+```
+
+->
+
+```
+{"balance": 123.45678, "ok": true}
+```
+
+
+#### Get Balance by Address
+
+Retrieve the amount unspent for this address. Optionally specify the minimum number of required confirmations (the default is 6).
+
+```
+curl https://tilt.cash/api/v1/balance_address?currency=btc&address=abcd&confs=1
+```
+
+->
+
+```
+{"balance": 0.1234, "ok": true}
+```
+
+#### Get Balance by Label
+
+Retrieve the amount unspent with this label. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
+
+```
+curl https://tilt.cash/api/v1/balance_label?currency=btc&wallet=1234&label=mysite_user12345&confs=60&apikey=1234
+```
+
+->
+
+```
+{"balance": 0.0054321, "ok": true}
+```
+
 #### Get Amount Received by Wallet
 
 Retrieve amount received by this wallet. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
+
+Note: Unlike the balance\_wallet method, labelled addresses are *not* included in this total.
 
 ```
 curl https://tilt.cash/api/v1/received_wallet?currency=btc&confs=1&apikey=1234
@@ -83,7 +128,6 @@ curl https://tilt.cash/api/v1/received_wallet?currency=btc&confs=1&apikey=1234
 ```
 {"received": 123.45678, "ok": true}
 ```
-
 
 #### Get Amount Received by Address
 

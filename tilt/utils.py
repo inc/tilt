@@ -41,6 +41,45 @@ def create_address(currency, label):
     except:
         logging.error("request failed; is tiltwlt running?")
 
+def balance_wallet(currency, confs):
+    req = {
+        'wallet': get_config("wallet_id"),
+        'api_key': get_config("api_key"),
+        'currency': currency
+    }
+    if confs: req['confs'] = int(confs)
+    r = requests.post('https://tilt.cash/api/v1/balance_wallet', json=req)
+    try:
+        return(r.json())
+    except:
+        logging.error("request failed; is tiltwlt running?")
+
+def balance_address(currency, address, confs):
+    req = {
+        'address': address,
+        'currency': currency
+    }
+    if confs: req['confs'] = int(confs)
+    r = requests.post('https://tilt.cash/api/v1/balance_address', json=req)
+    try:
+        return(r.json())
+    except:
+        logging.error("request failed; is tiltwlt running?")
+
+def balance_label(currency, label, confs):
+    req = {
+        'wallet': get_config("wallet_id"),
+        'api_key': get_config("api_key"),
+        'currency': currency,
+        'label': label
+    }
+    if confs: req['confs'] = int(confs)
+    r = requests.post('https://tilt.cash/api/v1/balance_label', json=req)
+    try:
+        return(r.json())
+    except:
+        logging.error("request failed; is tiltwlt running?")
+
 def received_wallet(currency, confs):
     req = {
         'wallet': get_config("wallet_id"),

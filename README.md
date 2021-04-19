@@ -101,6 +101,8 @@ You can also use the 'tilt freeze' command which will create a zip file containi
 
 ## Command Line Interface
 
+The following is a description of some of the most important Tilt commands, for a complete list see `tilt help`.
+
 ### Init
 
 This command creates a new Tilt wallet. You only need to do this once. This will create a ~/.tilt directory containing your wallet key.
@@ -161,37 +163,37 @@ $ tilt ping
 
 This command creates a new address and private key for the specified currency and stores them in your wallet. The private key is stored encrypted using your wallet key. The address is also registered with the Tilt service so that you will receive transaction notifications.
 
-You can optionally include a label that will assign the address to a separate wallet namespace. The total amount received of labelled addresses is not reflected by the `tilt received` command and instead you must use either the `tilt received-label` or `tilt received-address` command.
+You can optionally include a label that will assign the address to a separate wallet namespace.
 
 ```
 $ tilt create <currency> [label]
 ```
 
-### Display Amount Received (Wallet)
+### Display Wallet Balance
 
-This command displays the total amount received by your wallet for the specified currency. You can optionally specify the number of confirmations required for a transaction to be included in the total amount received.
-
-```
-$ tilt received <currency> [confirmations]
-```
-
-### Display Amount Received (Address)
-
-This command displays the total amount received by a specific address. You can optionally specify the number of confirmations required for a transaction to be included in the total amount received.
+This command displays the total of all unspent transactions for the specified currency, including all labelled and unlabelled addresses. You can optionally specify the number of confirmations required for a transaction to be included in the balance.
 
 ```
-$ tilt received-address <currency> <addr> [confirmations]
+$ tilt balance <currency> [confirmations]
 ```
 
-### Display Amount Received (Label)
+### Display Address Balance
 
-This command displays the total amount received by a specific label. You can optionally specify the number of confirmations required for a transaction to be included in the total amount received.
+This command displays the total of all unspent transactions for a specific address. You can optionally specify the number of confirmations required for a transaction to be included in the balance.
 
 ```
-$ tilt received-label <currency> <label> [confirmations]
+$ tilt balance-address <currency> <addr> [confirmations]
 ```
 
-### Display Address/Key Pair
+### Display Label Balance
+
+This command displays the total of all unspent transactions in your wallet for a specific label. You can optionally specify the number of confirmations required for a transaction to be included in the balance.
+
+```
+$ tilt balance-label <currency> <label> [confirmations]
+```
+
+### Display Wallet Entry
 
 This command displays the wallet entry for the given address, including the decrypted private key, any associated metadata and label.
 
@@ -204,7 +206,7 @@ $ tilt show <currency> <addr>
 This command displays a list of all of your addresses.
 
 ```
-$ tilt show [currency]
+$ tilt list [--show-labels] [currency]
 ```
 
 ### Quote

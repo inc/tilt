@@ -37,6 +37,9 @@ class TiltCLI:
             'list': self.do_wallet_list,
             'freeze': self.do_freeze,
             'destroy': self.do_destroy,
+            'balance': self.do_balance_wallet,
+            'balance-address': self.do_balance_address,
+            'balance-label': self.do_balance_label,
             'received': self.do_received_wallet,
             'received-address': self.do_received_address,
             'received-label': self.do_received_label,
@@ -100,13 +103,30 @@ class TiltCLI:
         sp_wallet_destroy.add_argument("--i-know-what-i-am-doing",
             action="store_true")
 
+        sp_balance_wallet = sp.add_parser("balance",
+            help="Display the balance for this wallet.")
+        sp_balance_wallet.add_argument("currency")
+        sp_balance_wallet.add_argument("confs", nargs='?')
+
+        sp_balance_address = sp.add_parser("balance-address",
+            help="Display the balance for this address.")
+        sp_balance_address.add_argument("currency")
+        sp_balance_address.add_argument("address")
+        sp_balance_address.add_argument("confs", nargs='?')
+
+        sp_balance_label = sp.add_parser("balance-label",
+            help="Display the balance for this label.")
+        sp_balance_label.add_argument("currency")
+        sp_balance_label.add_argument("label")
+        sp_balance_label.add_argument("confs", nargs='?')
+
         sp_received_wallet = sp.add_parser("received",
-            help="Display total amount received for this wallet.")
+            help="Display total amount received by unlabelled addresses.")
         sp_received_wallet.add_argument("currency")
         sp_received_wallet.add_argument("confs", nargs='?')
 
         sp_received_address = sp.add_parser("received-address",
-            help="Display total amount received for this address.")
+            help="Display total amount received by this address.")
         sp_received_address.add_argument("currency")
         sp_received_address.add_argument("address")
         sp_received_address.add_argument("confs", nargs='?')
@@ -226,6 +246,32 @@ class TiltCLI:
             exit(1)
         wm = WalletManager()
         wm.destroy(self.args.zipfile)
+
+    def do_balance_wallet(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        logging.info(tilt.balance_wallet(self.args.currency, self.args.confs))
+
+    def do_balance_address(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        if not self.args.address:
+            print("address not specified; exiting")
+            exit(1)
+        logging.info(tilt.balance_address(self.args.currency,
+            self.args.address, self.args.confs))
+
+    def do_balance_label(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        if not self.args.label:
+            print("label not specified; exiting")
+            exit(1)
+        logging.info(tilt.balance_label(self.args.currency, self.args.label,
+            self.args.confs))
 
     def do_received_wallet(self):
         if not self.args.currency:
