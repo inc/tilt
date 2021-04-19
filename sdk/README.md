@@ -41,7 +41,7 @@ curl -X GET https://tilt.cash/api/v1/create_address?currency=btc&wallet=1234
 
 #### Create a Payment Intent
 
-This method creates an expected future payment with associated metadata and returns the address where the payment should be sent.
+This method creates an expected future payment with associated metadata and returns the address where the payment should be sent. The metadata object can contain any fields you choose. The metadata is stored on your private server and Tilt servers.
 
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"wallet":1234,"currency":"btc","meta":{"amount":0.0013,"email":"test@tilt.cash"}}' https://tilt.cash/api/v1/create_address
@@ -56,9 +56,9 @@ curl -X POST -H "Content-Type: application/json" -d '{"wallet":1234,"currency":"
 
 #### Create a Labelled Address
 
-The create\_address methods support an optional "label" field that can be used to create an unlimited number of separate wallet namespaces. Using a label such as "<mysite>\_<userid>" will allow you to create a per-site per-user wallet namespace. The namespace is unique to the specified wallet and can contain any alpha-numeric characters plus underscores.
+The create\_address methods support an optional "label" field that can be used to create an unlimited number of separate wallet namespaces. Using a label such as "\<mysite\>\_\<userid\>" will allow you to create a per-site per-user wallet namespace. The namespace is unique to the specified wallet and can contain any alpha-numeric characters plus underscores.
 
-Note: You must use either the received\_label or received\_address method to get the total amount received by labelled addresses. The total amount received by labelled addresses will *not* be reflected by received\_wallet.
+Note: You must use either the received\_label or received\_address method to get the total amount received by labelled addresses. The total amount received by labelled addresses will *not* be reflected by received\_wallet. The balance\_wallet method will retrieve the total amount unspent by both labelled and unlabelled addresses.
 
 ```
 curl -X GET https://tilt.cash/api/v1/create_address?currency=btc&wallet=1234&label=mysite_user12345
