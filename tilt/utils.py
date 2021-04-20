@@ -80,6 +80,18 @@ def balance_label(currency, label, confs):
     except:
         logging.error("request failed; is tiltwlt running?")
 
+def balances(confs):
+    req = {
+        'wallet': get_config("wallet_id"),
+        'api_key': get_config("api_key"),
+    }
+    if confs: req['confs'] = int(confs)
+    r = requests.post('https://tilt.cash/api/v1/balances', json=req)
+    try:
+        return(r.json())
+    except:
+        logging.error("request failed; is tiltwlt running?")
+
 def received_wallet(currency, confs):
     req = {
         'wallet': get_config("wallet_id"),

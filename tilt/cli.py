@@ -5,8 +5,8 @@
 #
 
 import argparse
-import os
 import logging
+import os
 import zmq
 
 import tilt.utils as tilt
@@ -40,6 +40,7 @@ class TiltCLI:
             'balance': self.do_balance_wallet,
             'balance-address': self.do_balance_address,
             'balance-label': self.do_balance_label,
+            'balances': self.do_balances,
             'received': self.do_received_wallet,
             'received-address': self.do_received_address,
             'received-label': self.do_received_label,
@@ -93,6 +94,8 @@ class TiltCLI:
             help="Display list of all addresses in this wallet.")
         sp_wallet_list.add_argument("currency", nargs='?')
         sp_wallet_list.add_argument("--show-labels", action='store_true') 
+        sp_wallet_list.add_argument("--show-balances", action='store_true') 
+        sp_wallet_list.add_argument("--confs", nargs='?', default=6) 
 
         sp_wallet_freeze = sp.add_parser("freeze",
             help="Create a zip file containing decrypted wallet data.")
@@ -119,6 +122,10 @@ class TiltCLI:
         sp_balance_label.add_argument("currency")
         sp_balance_label.add_argument("label")
         sp_balance_label.add_argument("confs", nargs='?')
+
+        sp_balances = sp.add_parser("balances",
+            help="Display the balance for addresses with transactions.")
+        sp_balances.add_argument("confs", nargs='?')
 
         sp_received_wallet = sp.add_parser("received",
             help="Display total amount received by unlabelled addresses.")
@@ -231,7 +238,8 @@ class TiltCLI:
 
     def do_wallet_list(self):
         wm = WalletManager()
-        wm.list(self.args.currency, show_labels=self.args.show_labels)
+        wm.list(self.args.currency, show_labels=self.args.show_labels,
+            show_balances=self.args.show_balances, confs=self.args.confs)
 
     def do_freeze(self):
         wm = WalletManager()
@@ -272,6 +280,9 @@ class TiltCLI:
             exit(1)
         logging.info(tilt.balance_label(self.args.currency, self.args.label,
             self.args.confs))
+
+    def do_balances(self):
+        logging.info(tilt.balances(self.args.confs))
 
     def do_received_wallet(self):
         if not self.args.currency:

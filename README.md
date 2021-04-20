@@ -193,6 +193,14 @@ This command displays the total of all unspent transactions in your wallet for a
 $ tilt balance-label <currency> <label> [confirmations]
 ```
 
+### Display Balances
+
+This command displays the total of all unspent transactions for each address in your wallet that has transactions. You can optionally specify the number of confirmations required for a transaction to be included in the balance.
+
+```
+$ tilt balances [confirmations]
+```
+
 ### Display Wallet Entry
 
 This command displays the wallet entry for the given address, including the decrypted private key, any associated metadata and label.
@@ -206,7 +214,7 @@ $ tilt show <currency> <addr>
 This command displays a list of all of your addresses.
 
 ```
-$ tilt list [--show-labels] [currency]
+$ tilt list [--show-balances] [--show-labels] [currency]
 ```
 
 ### Quote

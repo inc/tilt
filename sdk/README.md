@@ -113,6 +113,20 @@ curl https://tilt.cash/api/v1/balance_label?currency=btc&wallet=1234&label=mysit
 {"balance": 0.0054321, "ok": true}
 ```
 
+#### Get Balances
+
+Retrieve the balance for all monitored addresses that have transactions. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.
+
+```
+curl https://tilt.cash/api/v1/balances?wallet=1234&confs=60&apikey=1234
+```
+
+->
+
+```
+{'tdoge': {'abcd': 344.267, 'dcba': 100}, 'ltc': {}, 'doge': {}, 'btc': {}}
+```
+
 #### Get Amount Received by Wallet
 
 Retrieve amount received by this wallet. Optionally specify the minimum number of required confirmations (the default is 6). An API key is required for this method. Do *not* call this directly from a website or app.

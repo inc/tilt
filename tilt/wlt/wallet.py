@@ -77,25 +77,40 @@ class WalletManager:
         pp = pprint.PrettyPrinter()
         pp.pprint(self.get(currency, address))
 
-    def list(self, currency, show_labels=False):
+    def list(self, currency, show_labels=False, show_balances=False, confs=6):
         if currency:
             fn = self.walletdir + "/" + currency + ".*.json"
         else:
             fn = self.walletdir + "/*.json"
+
+        balances = {}
+        if show_balances:
+            res = tilt.balances(confs)
+            balances = res['balances']
 
         files = list(glob.iglob(fn))
         files.sort(key=os.path.getmtime)
 
         for fn in files:
             fs = os.path.basename(fn).split('.')
+            print(fs[0], "\t", fs[1], end='')
+
+            if fs[0] in balances and fs[1] in balances[fs[0]]:
+                balance = balances[fs[0]][fs[1]]
+            else:
+                balance = 0
+
+            if show_balances:
+                print("\t", balance, end='')
+
             if show_labels:
                 with open(fn) as f:
                     w = json.loads(f.read())
                     label = ''
                     if 'label' in w and w['label']: label = w['label']
-                    print(fs[0], "\t", fs[1], "\t", label)
-            else:
-                print(fs[0], "\t", fs[1])
+                    print("\t", label, end='')
+
+            print('', flush=True)
 
     def freeze(self):
         zfn = 'tilt-freeze-' + str(int(time.time())) + '.zip'
