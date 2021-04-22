@@ -1,0 +1,21 @@
+{
+  "wallet_id": "",
+  "min_confs": 6,
+  "conf_check_secs": 30,
+  "accepted_currencies": [ "btc", "ltc", "doge", "tdoge" ],
+  "price_currency": "usd",
+  "book_dir": "books",
+  "skus": {
+    "ebook0001": {
+      "title": "Example Book #1",
+        "price": 1.00, "file": "ebook0001.pdf", "type": "application/pdf"
+    },
+    "ebook0002": {
+      "title": "Example Book #2",
+      "price": 1.25, "file": "ebook0002.pdf", "type": "application/pdf"
+    }
+  },
+  "mail_from": "test@tilt.cash",
+  "mail_subject": "Your e-book order.",
+  "mail_text": "Here is the example book you ordered."
+}
