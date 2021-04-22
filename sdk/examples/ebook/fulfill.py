@@ -10,7 +10,6 @@ import logging
 import os
 import json
 import websocket
-import zmq
 import time
 
 import sendgrid
