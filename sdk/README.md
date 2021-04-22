@@ -186,6 +186,22 @@ GET https://tilt.cash/api/v1/quote?sym=btcusd
 {"price": 2343.32, "price_str": "2343.320000000000", "ok": true}
 ```
 
+### WebSocket API
+
+A WebSocket API is provided that will let you receive real-time notifications of transactions. An API key is required. Do *not* call this directly from a website or app.
+
+Connect to wss://tilt.cash/api/v1/ws\_api and send the following message:
+
+```
+{ "method": "hello", "args": { "wallet": "1234", "auth": "my_api_key" } }
+```
+
+You will then receive notifications of transactions related to your wallet. Note that you may receive multiple messages for a single transaction. It is recommended to poll the account balance after receiving a transaction until the payment is confirmed, see the e-book example for more details. Any metadata associated with the address will be included with each message.
+
+```
+{'value': 10000000000, 'type': 'tx', 'txid': '1234', 'meta': {}, 'label': None, 'currency': 'tdoge', 'address': 'abcd'}
+```
+
 ### JavaScript
 
 ```
@@ -213,4 +229,5 @@ tilt.received_wallet(wallet, currency)
 tilt.received_address(wallet, currency, address)
 tilt.received_label(wallet, currency, label)
 tilt.quote(symbol)
+tilt.ping()
 ```

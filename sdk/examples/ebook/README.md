@@ -24,12 +24,12 @@ Install Tilt and activate the environment as described in the main README file.
 Then install the additional requirements for this example:
 
 ```
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ## Usage
 
-1. Edit config.json and add your Tilt wallet\_id.
+1. Edit web/config.json and add your Tilt wallet\_id.
 
 2. Run the following commands:
 
