@@ -41,6 +41,19 @@ def create_address(currency, label):
     except:
         logging.error("request failed; is tiltwlt running?")
 
+def create_unused(currency, addrs):
+    req = {
+        'wallet': get_config("wallet_id"),
+        'api_key': get_config("api_key"),
+        'currency': currency,
+        'addresses': addrs
+    }
+    r = requests.post('https://tilt.cash/api/v1/create_unused', json=req)
+    try:
+        return(r.json())
+    except:
+        logging.error("request failed; is tiltwlt running?")
+
 def balance_wallet(currency, confs):
     req = {
         'wallet': get_config("wallet_id"),

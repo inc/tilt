@@ -33,6 +33,7 @@ class TiltCLI:
             'ping': self.do_ping,
             'monitor': self.do_monitor,
             'create': self.do_wallet_create,
+            'create-unused': self.do_wallet_create_unused,
             'show': self.do_wallet_show,
             'list': self.do_wallet_list,
             'freeze': self.do_freeze,
@@ -85,6 +86,13 @@ class TiltCLI:
         sp_wallet_create.add_argument("currency")
         sp_wallet_create.add_argument("label", nargs='?')
 
+        sp_wallet_create_unused = sp.add_parser("create-unused",
+            help="Create unused addresses and private keys.")
+
+        sp_wallet_create_unused.add_argument("currency")
+        sp_wallet_create_unused.add_argument("quantity", nargs='?',
+            type=int, default=1)
+
         sp_wallet_show = sp.add_parser("show",
             help="Display private key and metadata for this address.")
         sp_wallet_show.add_argument("currency")
@@ -95,7 +103,8 @@ class TiltCLI:
         sp_wallet_list.add_argument("currency", nargs='?')
         sp_wallet_list.add_argument("--show-labels", action='store_true') 
         sp_wallet_list.add_argument("--show-balances", action='store_true') 
-        sp_wallet_list.add_argument("--confs", nargs='?', default=6) 
+        sp_wallet_list.add_argument("--show-unused", action='store_true') 
+        sp_wallet_list.add_argument("--confs", nargs='?', type=int, default=6) 
 
         sp_wallet_freeze = sp.add_parser("freeze",
             help="Create a zip file containing decrypted wallet data.")
@@ -226,6 +235,14 @@ class TiltCLI:
             exit(1)
         logging.info(tilt.create_address(self.args.currency, self.args.label))
 
+    def do_wallet_create_unused(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        wm = WalletManager()
+        addrs = wm.create_unused(self.args.currency, self.args.quantity)
+        logging.info(tilt.create_unused(self.args.currency, addrs))
+
     def do_wallet_show(self):
         if not self.args.currency:
             print("currency not specified; exiting")
@@ -239,7 +256,8 @@ class TiltCLI:
     def do_wallet_list(self):
         wm = WalletManager()
         wm.list(self.args.currency, show_labels=self.args.show_labels,
-            show_balances=self.args.show_balances, confs=self.args.confs)
+            show_balances=self.args.show_balances,
+            show_unused=self.args.show_unused, confs=self.args.confs)
 
     def do_freeze(self):
         wm = WalletManager()

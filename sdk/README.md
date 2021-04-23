@@ -17,6 +17,8 @@ Most of the API can be accessed directly from your website or app.
 
 The API requests are available as both HTTPS GET and POST requests that return JSON data. See the Curl examples below for details about using the API directly.
 
+Successful API requests will result in HTTP status code 200 and contain a field "ok" with the value True. Unsuccessful API requests may result either in the value of "ok" being False or HTTP status 500.
+
 The latest JavaScript library is available at https://tilt.cash/js/tilt.js.
 
 ### API Key

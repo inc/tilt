@@ -30,7 +30,7 @@ class WalletManager:
         return
 
     # create a new address/key pair, return the new address
-    def create(self, currency, meta, label):
+    def create(self, currency, meta={}, label=None, unused=False):
 
         k = Key(network=self.currency_to_network(currency))
 
@@ -45,6 +45,7 @@ class WalletManager:
             'cipher_wif': wif_cipher_bytes,
             'meta': meta,
             'label': label,
+            'unused': unused,
             'ts': int(time.time())
         }
 
@@ -53,6 +54,13 @@ class WalletManager:
             f.write(json.dumps(r))
 
         return address
+
+    # create new unused address/key pairs, return the new address
+    def create_unused(self, currency, quantity=1):
+        addrs = []
+        for i in range(quantity):
+            addrs.append(self.create(currency, unused=True))
+        return addrs
 
     def load(self, filename):
         with open(filename, "r") as f:
@@ -77,7 +85,9 @@ class WalletManager:
         pp = pprint.PrettyPrinter()
         pp.pprint(self.get(currency, address))
 
-    def list(self, currency, show_labels=False, show_balances=False, confs=6):
+    def list(self, currency, show_labels=False, show_balances=False,
+        show_unused=False, confs=6):
+
         if currency:
             fn = self.walletdir + "/" + currency + ".*.json"
         else:
@@ -93,6 +103,13 @@ class WalletManager:
 
         for fn in files:
             fs = os.path.basename(fn).split('.')
+
+            with open(fn) as f:
+                w = json.loads(f.read())
+
+            if 'unused' in w and w['unused'] and not show_unused:
+                continue
+
             print(fs[0], "\t", fs[1], end='')
 
             if fs[0] in balances and fs[1] in balances[fs[0]]:
@@ -104,8 +121,6 @@ class WalletManager:
                 print("\t", balance, end='')
 
             if show_labels:
-                with open(fn) as f:
-                    w = json.loads(f.read())
                     label = ''
                     if 'label' in w and w['label']: label = w['label']
                     print("\t", label, end='')

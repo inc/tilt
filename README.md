@@ -44,9 +44,9 @@ $ tilt info
 
 ## Wallet Service
 
-The Tilt wallet service is designed to run on a private server (or always-on local computer) and act as a hot wallet. It maintains a constant WebSocket connection to the Tilt servers. Requests from your site or app are routed through the Tilt servers to your wallet service.
+The Tilt wallet service is designed to run on a private server (or local computer) and act as a hot wallet. It maintains a constant WebSocket connection to the Tilt servers. Requests from your site or app are routed through the Tilt servers to your wallet service. In the event that your wallet service is offline, it's possible to pre-generate "unused" addresses that will be used during downtime.
 
-The private keys are generated and stored on your private server and therefore they are *not* be accessible to Tilt or anyone else.
+The private keys are generated and stored on your private server and therefore they are *not* accessible to Tilt or anyone else.
 
 ## Tilt Directory
 
@@ -167,6 +167,14 @@ You can optionally include a label that will assign the address to a separate wa
 
 ```
 $ tilt create <currency> [label]
+```
+
+### Create Unused Address/Key Pair
+
+This command creates "unused" addresses and private keys for the specified currency. These addresses are registered with Tilt but they are not immediately monitored. In the event that your local wallet service is offline, these addresses will be used by any calls to the create\_address API method and will then become monitored. You can create up to 10 unused address at a time.
+
+```
+$ tilt create-unused <currency> [quantity]
 ```
 
 ### Display Wallet Balance
