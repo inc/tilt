@@ -222,7 +222,7 @@ $ tilt show <currency> <addr>
 This command displays a list of all of your addresses.
 
 ```
-$ tilt list [--show-balances] [--show-labels] [currency]
+$ tilt list [--show-balances] [--show-labels] [--show-unused] [currency]
 ```
 
 ### Quote
