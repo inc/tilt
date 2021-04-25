@@ -10,6 +10,7 @@ In order to test your integration with Tilt we recommend using TDOGE and request
 
  - [Donation Example](examples/donate)
  - [Digital Product Delivery Example](examples/ebook)
+ - [Widget Usage Examples](examples/widgets)
 
 ## API
 
