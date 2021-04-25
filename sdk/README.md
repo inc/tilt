@@ -20,7 +20,7 @@ The API requests are available as both HTTPS GET and POST requests that return J
 
 Successful API requests will result in HTTP status code 200 and contain a field "ok" with the value True. Unsuccessful API requests may result either in the value of "ok" being False or HTTP status 500.
 
-The latest JavaScript library is available at https://tilt.cash/js/tilt.js.
+The latest JavaScript library is available at https://tilt.cash/js/tilt.js and https://tilt.cash/js/tilt.min.js.
 
 ### API Key
 
