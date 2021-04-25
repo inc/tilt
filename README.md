@@ -188,7 +188,7 @@ $ tilt create <currency> [label]
 
 ### Create Unused Address/Key Pair
 
-This command creates "unused" addresses and private keys for the specified currency. These addresses are registered with Tilt but they are not immediately monitored. In the event that your local wallet service is offline, these addresses will be used by any calls to the create\_address API method and will then become monitored. You can create up to 10 unused address at a time.
+This command creates "unused" addresses and private keys for the specified currency. These addresses are registered with Tilt but they are not immediately monitored. In the event that your local wallet service is offline, these addresses will be used by any calls to the create\_address API method and will then become monitored. You can create up to 10 unused addresses at a time.
 
 ```
 $ tilt create-unused <currency> [quantity]
