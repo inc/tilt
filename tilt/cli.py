@@ -52,7 +52,7 @@ class TiltCLI:
     def parse_args(self):
 
         self.parser = argparse.ArgumentParser()
-        sp = self.parser.add_subparsers(dest="command")
+        sp = self.parser.add_subparsers(dest="command", title="commands")
 
         sp_help = sp.add_parser("help", help="Display help.")
         sp_init = sp.add_parser("init",

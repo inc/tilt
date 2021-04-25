@@ -29,7 +29,7 @@ See the [SDK](sdk) directory for API documentation and integration examples.
  8. Run `tilt monitor` to view transactions in real-time.
  9. Visit https://tilt.cash to access the web-based interface.
 
-## Installation
+## Installation (Debian/Ubuntu)
 
 ```
 $ sudo apt-get install build-essential python3 python3-dev python3-venv libgmp3-dev
@@ -40,6 +40,23 @@ $ source env/bin/activate
 $ pip install --upgrade pip
 $ pip install .
 $ tilt info
+```
+
+## Installation (OS X)
+
+```
+$ brew install gmp
+$ brew install openssl
+$ git clone git://github.com/inc/tilt
+$ cd tilt
+$ python3 -mvenv env
+$ source env/bin/activate
+$ pip install --upgrade pip setuptools wheel
+$ export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
+$ export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
+$ export CFLAGS="-I/opt/homebrew/include -L/opt/homebrew/lib"
+$ pip install .
+
 ```
 
 ## Wallet Service
