@@ -56,7 +56,7 @@ $ export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
 $ export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
 $ export CFLAGS="-I/opt/homebrew/include -L/opt/homebrew/lib"
 $ pip install .
-
+$ tilt info
 ```
 
 ## Wallet Service
