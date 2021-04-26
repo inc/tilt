@@ -90,8 +90,9 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$total = $order->get_meta('crypto_total');
 
 		$instructions = 
-			'<b>Please send a payment of ' . $total . ' ' . $currency .
-			' to the following address:<br/>' . $addr . '</b>';
+			'<h2>Payment Details</h2>' .
+			'Please send a payment of <b>' . $total . '</b> ' . $currency .
+			' to the following address:<br/><b>' . $addr . '</b>';
 
 		return $instructions;
    }
