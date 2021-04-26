@@ -12,6 +12,10 @@ In order to test your integration with Tilt we recommend using TDOGE and request
  - [Digital Product Delivery Example](examples/ebook)
  - [Widget Usage Examples](examples/widgets)
 
+## Plugins
+
+ - [WooCommerce Plugin](woocommerce/tilt)
+
 ## API
 
 Most of the API can be accessed directly from your website or app.
