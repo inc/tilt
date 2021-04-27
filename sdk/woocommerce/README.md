@@ -8,9 +8,10 @@ The Tilt WooCommerce plug-in allows you to quickly and easily integrate Tilt wit
 
 1. Make a directory wordpress/wp-content/plugins/tilt.
 2. Copy [tilt.php](tilt/tilt.php) to that directory.
-3. Go to your Wordpress dashboard -> WooCommerce -> Settings -> Payments.
-4. Click the "Set up" button next to "Cryptocurrency".
-5. Check "Enable crypto payments".
-6. Enter your Tilt Wallet ID.
-7. Save changes.
-8. Begin accepting crypto payments.
+3. Go to your Wordpress dashboard -> Plugins -> Tilt Crypto -> Activate.
+4. Go to your Wordpress dashboard -> WooCommerce -> Settings -> Payments.
+5. Click the "Set up" button next to "Cryptocurrency".
+6. Check "Enable crypto payments".
+7. Enter your Tilt Wallet ID.
+8. Save changes.
+9. Begin accepting crypto payments.
