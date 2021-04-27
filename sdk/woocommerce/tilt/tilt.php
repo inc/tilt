@@ -89,7 +89,7 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$currency = $order->get_meta('crypto_currency');
 		$total = $order->get_meta('crypto_total');
 
-		$instructions = 
+		$instructions =
 			'<h2>Payment Details</h2>' .
 			'Please send a payment of <b>' . $total . '</b> ' . $currency .
 			' to the following address:<br/><b>' . $addr . '</b>';
@@ -150,25 +150,11 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 	 * @param bool     $plain_text Email format: plain text or HTML.
 	 */
 	public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
+		$this->tilt_create_order($order);
 		echo wp_kses_post( wpautop( wptexturize( $this->generate_instructions($order) ) ) . PHP_EOL );
 	}
 
-	/**
-	 * Process the payment and return the result.
-	 *
-	 * @param int $order_id Order ID.
-	 * @return array
-	 */
-	public function process_payment( $order_id ) {
-
-		$order = wc_get_order( $order_id );
-
-		if ( $order->get_total() > 0 ) {
-			// Mark as on-hold (we're awaiting the tilt).
-			$order->update_status( apply_filters( 'woocommerce_tilt_process_payment_order_status', 'on-hold', $order ), _x( 'Awaiting crypto payment', 'Crypto payment method', 'woocommerce' ) );
-		} else {
-			$order->payment_complete();
-		}
+   public function tilt_create_order($order) {
 
 		$total = $order->get_total();
 		$currency = $order->get_currency();
@@ -186,7 +172,6 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		));
 
 		$quote = json_decode(wp_remote_retrieve_body($req));
-
 		$crypto_total = $total / $quote->price;
 
 		$wallet = $this->get_option('wallet');
@@ -214,6 +199,24 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$order->add_meta_data('crypto_currency', $_POST['crypto_currency'], true);
 		$order->add_meta_data('crypto_total', $crypto_total, true);
 		$order->save();
+   }
+
+	/**
+	 * Process the payment and return the result.
+	 *
+	 * @param int $order_id Order ID.
+	 * @return array
+	 */
+	public function process_payment( $order_id ) {
+
+		$order = wc_get_order( $order_id );
+
+		if ( $order->get_total() > 0 ) {
+			// Mark as on-hold (we're awaiting the tilt).
+			$order->update_status( apply_filters( 'woocommerce_tilt_process_payment_order_status', 'on-hold', $order ), _x( 'Awaiting crypto payment', 'Crypto payment method', 'woocommerce' ) );
+		} else {
+			$order->payment_complete();
+		}
 
 		// Remove cart.
 		WC()->cart->empty_cart();
