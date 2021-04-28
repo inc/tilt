@@ -80,7 +80,6 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 				'BTC' => __('Bitcoin (BTC)'),
 				'LTC' => __('Litecoin (LTC)'),
 				'DOGE' => __('Dogecoin (DOGE)'),
-				'TDOGE' => __('Dogecoin Testnet (TDOGE)'),
 			),
 			'default' => 'BTC'));
 
