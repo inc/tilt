@@ -60,7 +60,7 @@ def balance_wallet(currency, confs):
         'api_key': get_config("api_key"),
         'currency': currency
     }
-    if confs: req['confs'] = int(confs)
+    if confs != None: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/balance_wallet', json=req)
     try:
         return(r.json())
@@ -72,7 +72,7 @@ def balance_address(currency, address, confs):
         'address': address,
         'currency': currency
     }
-    if confs: req['confs'] = int(confs)
+    if confs != None: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/balance_address', json=req)
     try:
         return(r.json())
@@ -86,7 +86,7 @@ def balance_label(currency, label, confs):
         'currency': currency,
         'label': label
     }
-    if confs: req['confs'] = int(confs)
+    if confs != None: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/balance_label', json=req)
     try:
         return(r.json())
@@ -98,7 +98,7 @@ def balances(confs):
         'wallet': get_config("wallet_id"),
         'api_key': get_config("api_key"),
     }
-    if confs: req['confs'] = int(confs)
+    if confs != None: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/balances', json=req)
     try:
         return(r.json())
@@ -111,7 +111,7 @@ def received_wallet(currency, confs):
         'api_key': get_config("api_key"),
         'currency': currency
     }
-    if confs: req['confs'] = int(confs)
+    if confs != None: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/received_wallet', json=req)
     try:
         return(r.json())
@@ -123,7 +123,7 @@ def received_address(currency, address, confs):
         'address': address,
         'currency': currency
     }
-    if confs: req['confs'] = int(confs)
+    if confs != None: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/received_address', json=req)
     try:
         return(r.json())
@@ -137,7 +137,7 @@ def received_label(currency, label, confs):
         'currency': currency,
         'label': label
     }
-    if confs: req['confs'] = int(confs)
+    if confs != None: req['confs'] = int(confs)
     r = requests.post('https://tilt.cash/api/v1/received_label', json=req)
     try:
         return(r.json())
