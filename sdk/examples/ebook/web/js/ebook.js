@@ -54,7 +54,9 @@ var EBOOK = new function() {
 			$('#btn-buy').hide();
 			TILT.create_address(currency, meta, function(res) {
 				if (res['ok']) {
-					$('#txt-address').text(res['address']);
+					var price = parseFloat($('#lbl-price').text());
+					var link = TILT.link(currency, res['address'], price);
+					$('#txt-address').html(link);
 					$('#txt-address').removeClass('d-none');
 					$('#lbl-help').text("Please send your payment to the above " +
 						currency.toUpperCase() + " address.")

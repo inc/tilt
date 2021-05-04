@@ -60,7 +60,7 @@
         $('#btn-donate').hide();
         TILT.create_address(currency, meta, function(res) {
           if (res['ok']) {
-            $('#txt-address').text(res['address']);
+            $('#txt-address').html(TILT.link(currency, res['address']));
             $('#txt-address').removeClass('d-none');
             $('#lbl-help').text("Please send your donation to the above " +
               currency.toUpperCase() + " address.")

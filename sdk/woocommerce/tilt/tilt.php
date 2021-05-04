@@ -24,6 +24,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+add_filter( 'kses_allowed_protocols', function ( $protocols ) {
+	$protocols[] = 'bitcoin';
+	$protocols[] = 'litecoin';
+	$protocols[] = 'dogecoin';
+	return $protocols;
+});
+
 add_action( 'plugins_loaded', 'tilt_init_gateway_class' );
 
 function tilt_add_gateway_class( $methods ) {
@@ -91,10 +98,23 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$currency = $order->get_meta('crypto_currency');
 		$total = $order->get_meta('crypto_total');
 
+		$cs = NULL;
+		if ($currency == 'BTC') $cs = 'bitcoin';
+		if ($currency == 'LTC') $cs = 'litecoin';
+		if ($currency == 'DOGE') $cs = 'dogecoin';
+
+		if ($cs) {
+			$link = '<a href="' . $cs . ':' . $addr .
+				'?amount=' . $total . '">' . $addr . '</a>';
+		} else {
+			$link = $addr;
+
+		}
+
 		$instructions =
 			'<h2>Payment Details</h2>' .
 			'Please send a payment of <b>' . $total . '</b> ' . $currency .
-			' to the following address:<br/><b>' . $addr . '</b><br/><br/>' .
+			' to the following address:<br/><b>' . $link . '</b><br/><br/>' .
 			'<i>Note: Depending on the currency used it may take over an hour ' .
 			'to confirm your payment. We will send an update once your payment ' .
 			'is confirmed and your order is being processed.</i>';
