@@ -11,7 +11,7 @@
  * Plugin Name:       Tilt Cryptocurrency Payments
  * Plugin URI:        https://github.com/inc/tilt/blob/main/sdk/woocommerce
  * Description:       Accept cryptocurrency payments directly into your wallet.
- * Version:           1.0.0
+ * Version:           1.0
  * Requires at least: 5.2
  * Requires PHP:      7.4
  * Author:            Lone Dynamics
@@ -56,7 +56,7 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$this->icon               = apply_filters( 'woocommerce_tilt_icon', 'https://tilt.cash/images/tilt.png' );
 		$this->has_fields         = true;
 		$this->method_title       = _x( 'Cryptocurrency', 'Crypto payment method', 'woocommerce' );
-		$this->method_description = __( 'Take payments via cryptocurrency using the Tilt platform.', 'woocommerce' );
+		$this->method_description = __( 'Take payments with cryptocurrency using the Tilt platform.', 'woocommerce' );
 
 		// Load the settings.
 		$this->init_form_fields();
@@ -98,18 +98,13 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$currency = $order->get_meta('crypto_currency');
 		$total = $order->get_meta('crypto_total');
 
-		$cs = NULL;
+		$cs = '';
 		if ($currency == 'BTC') $cs = 'bitcoin';
 		if ($currency == 'LTC') $cs = 'litecoin';
 		if ($currency == 'DOGE') $cs = 'dogecoin';
 
-		if ($cs) {
-			$link = '<a href="' . $cs . ':' . $addr .
-				'?amount=' . $total . '">' . $addr . '</a>';
-		} else {
-			$link = $addr;
-
-		}
+		$link = '<a href="' . $cs . ':' . $addr .
+			'?amount=' . $total . '">' . $addr . '</a>';
 
 		$instructions =
 			'<h2>Payment Details</h2>' .
@@ -119,7 +114,16 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 			'to confirm your payment. We will send an update once your payment ' .
 			'is confirmed and your order is being processed.</i>';
 
-		return $instructions;
+		$failed_instructions = 
+			'<h2>Payment Details</h2>We will contact you shortly with ' .
+			'instructions for payment.';
+
+		if (! ($addr && $cs && $total)) {
+			return $failed_instructions;
+		} else {
+			return $instructions;
+		}
+
    }
 
 	/**
@@ -151,7 +155,28 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 			'wallet'        => array(
 				'title'       => __( 'Tilt Wallet ID', 'woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Enter your Tilt wallet ID.', 'woocommerce' ),
+				'description' => __( 'Enter the Wallet ID of your Tilt wallet. Visit tilt.cash for more information.', 'woocommerce' ),
+				'default'     => '',
+				'desc_tip'    => true,
+			),
+			'fallback_btc'   => array(
+				'title'       => __( 'Fallback Bitcoin Address', 'woocommerce' ),
+				'type'        => 'text',
+				'description' => __( 'If an address is entered here, it will be used in the event that your Tilt wallet service is not running.', 'woocommerce' ),
+				'default'     => '',
+				'desc_tip'    => true,
+			),
+			'fallback_ltc'   => array(
+				'title'       => __( 'Fallback Litecoin Address', 'woocommerce' ),
+				'type'        => 'text',
+				'description' => __( 'If an address is entered here, it will be used in the event that your Tilt wallet service is not running.', 'woocommerce' ),
+				'default'     => '',
+				'desc_tip'    => true,
+			),
+			'fallback_doge'   => array(
+				'title'       => __( 'Fallback Dogecoin Address', 'woocommerce' ),
+				'type'        => 'text',
+				'description' => __( 'If an address is entered here, it will be used in the event that your Tilt wallet service is not running.', 'woocommerce' ),
 				'default'     => '',
 				'desc_tip'    => true,
 			),
@@ -217,13 +242,25 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 			'data_format' => 'body',
 		));
 
-		$res = json_decode(wp_remote_retrieve_body($req));
-		$addr = $res->address;
+		$lc = strtolower($crypto_currency);
+		$rescode = wp_remote_retrieve_response_code($req);
+
+		if ($rescode == 200) {
+			$res = json_decode(wp_remote_retrieve_body($req));
+			if ($res->ok == true) {
+				$addr = $res->address;
+			} else {
+				$addr = $this->get_option('fallback_' . $lc, '');
+			}
+		} else {
+			$addr = $this->get_option('fallback_' . $lc, '');
+		}
 
 		$order->add_meta_data('crypto_address', $addr, true);
-		$order->add_meta_data('crypto_currency', $_POST['crypto_currency'], true);
+		$order->add_meta_data('crypto_currency', $crypto_currency, true);
 		$order->add_meta_data('crypto_total', $crypto_total, true);
 		$order->save();
+
    }
 
 	/**
@@ -237,7 +274,7 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$order = wc_get_order( $order_id );
 
 		if ( $order->get_total() > 0 ) {
-			// Mark as on-hold (we're awaiting the tilt).
+			// Mark as on-hold (we're awaiting the payment).
 			$order->update_status( apply_filters( 'woocommerce_tilt_process_payment_order_status', 'on-hold', $order ), _x( 'Awaiting crypto payment', 'Crypto payment method', 'woocommerce' ) );
 		} else {
 			$order->payment_complete();
