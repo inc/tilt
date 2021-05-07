@@ -209,7 +209,7 @@ class WC_Gateway_Tilt extends WC_Payment_Gateway {
 		$total = $order->get_total();
 		$currency = $order->get_currency();
 
-		$crypto_currency = $_POST['crypto_currency'];
+		$crypto_currency = sanitize_text_field($_POST['crypto_currency']);
 
 		$sym = $crypto_currency . $currency;
 
