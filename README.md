@@ -75,7 +75,6 @@ Tilt maintains a directory inside your home directory at ~/.tilt.
 | site\_key | Secret key for importing your wallet on the Tilt website |
 | srv\_key | Secret key for connecting to the Tilt service |
 | tilt.log | Output of the wallet service |
-| tiltwlt.pid | Pid of the wallet service |
 | wallet/ | Directory containing addresses, encrypted keys and metadata |
 | wallet\_id | Non-secret ID of your wallet |
 | wallet\_key | Secret key used to encrypt your private keys |

@@ -24,32 +24,30 @@ class WalletServiceMonitor():
 
     def start(self):
         tiltdir = os.path.expanduser("~/.tilt")
-        if os.path.exists(tiltdir + "/tiltwlt.pid"):
-            logging.error(tiltdir + "/tiltwlt.pid exists; try 'tilt stop'")
+        if os.path.exists("/tmp/tiltwlt.pid"):
+            logging.error("/tmp/tiltwlt.pid exists; try 'tilt stop'")
             exit(1)
         FLOG = open(tiltdir + "/tilt.log", "a")
         p = subprocess.Popen(["tilt", "server"],
             stdout=FLOG, stderr=subprocess.STDOUT)
-        with open(tiltdir + "/tiltwlt.pid", "w") as f:
+        with open("/tmp/tiltwlt.pid", "w") as f:
             f.write(str(p.pid))
 
     def status(self):
-        tiltdir = os.path.expanduser("~/.tilt")
-        if os.path.exists(tiltdir + "/tiltwlt.pid"):
-            with open(tiltdir + "/tiltwlt.pid", "r") as f:
+        if os.path.exists("/tmp/tiltwlt.pid"):
+            with open("/tmp/tiltwlt.pid", "r") as f:
                 pid = int(f.read())
             logging.info("tiltwlt is running as pid %s" % pid)
         else:
             logging.info("tiltwlt is not running")
 
     def stop(self):
-        tiltdir = os.path.expanduser("~/.tilt")
-        if not os.path.exists(tiltdir + "/tiltwlt.pid"):
+        if not os.path.exists("/tmp/tiltwlt.pid"):
             logging.error("tiltwlt is not running")
             exit(1)
-        with open(tiltdir + "/tiltwlt.pid", "r") as f:
+        with open("/tmp/tiltwlt.pid", "r") as f:
             pid = int(f.read())
-            os.remove(tiltdir + "/tiltwlt.pid")
+            os.remove("/tmp/tiltwlt.pid")
             os.kill(pid, signal.SIGTERM)
 
 class WalletService():
