@@ -114,7 +114,7 @@ Virtual private servers (VPS) may be potentially vulnerable to certain types of 
 
 Private keys are stored encrypted as an additional level of security which means that you *must* back up your ~/.tilt/wallet\_key along with your wallet data.
 
-You can also use the `tilt freeze` command which will create a zip file containing all of your wallet data without any encryption. You can then copy this file to another computer and verify it's contents before removing the keys from your hot wallet using `tilt destroy`.
+You can also use the `tilt freeze` command which will create a zip file containing all of your wallet data without any encryption. You can then copy this file to another computer and verify its contents before removing the keys from your hot wallet using `tilt destroy`.
 
 ## Command Line Interface
 
