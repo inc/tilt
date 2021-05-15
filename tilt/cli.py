@@ -34,6 +34,9 @@ class TiltCLI:
             'monitor': self.do_monitor,
             'create': self.do_wallet_create,
             'create-unused': self.do_wallet_create_unused,
+            'import-unused': self.do_wallet_import_unused,
+            'list-unused': self.do_wallet_list_unused,
+            'destroy-unused': self.do_wallet_destroy_unused,
             'show': self.do_wallet_show,
             'list': self.do_wallet_list,
             'freeze': self.do_freeze,
@@ -92,6 +95,19 @@ class TiltCLI:
         sp_wallet_create_unused.add_argument("currency")
         sp_wallet_create_unused.add_argument("quantity", nargs='?',
             type=int, default=1)
+
+        sp_wallet_import_unused = sp.add_parser("import-unused",
+            help="Import a list of unused addresses from a text file.")
+        sp_wallet_import_unused.add_argument("currency")
+        sp_wallet_import_unused.add_argument("filename")
+
+        sp_wallet_list_unused = sp.add_parser("list-unused",
+            help="List all unused addresses registered with Tilt.")
+        sp_wallet_list_unused.add_argument("currency")
+
+        sp_wallet_destroy_unused = sp.add_parser("destroy-unused",
+            help="Remove all unused addresses registered with Tilt.")
+        sp_wallet_destroy_unused.add_argument("currency")
 
         sp_wallet_show = sp.add_parser("show",
             help="Display private key and metadata for this address.")
@@ -241,7 +257,34 @@ class TiltCLI:
             exit(1)
         wm = WalletManager()
         addrs = wm.create_unused(self.args.currency, self.args.quantity)
-        logging.info(tilt.create_unused(self.args.currency, addrs))
+        logging.info(tilt.import_unused(self.args.currency, addrs))
+
+    def do_wallet_import_unused(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        if not self.args.filename:
+            print("filename not specified; exiting")
+            exit(1)
+        addrs = []
+        with open(self.args.filename) as f:
+            for l in f:
+                addr = l.strip()
+                addrs.append(addr)
+                logging.info("importing unused address %s" % addr)
+        logging.info(tilt.import_unused(self.args.currency, addrs))
+
+    def do_wallet_list_unused(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        logging.info(tilt.list_unused(self.args.currency))
+
+    def do_wallet_destroy_unused(self):
+        if not self.args.currency:
+            print("currency not specified; exiting")
+            exit(1)
+        logging.info(tilt.destroy_unused(self.args.currency))
 
     def do_wallet_show(self):
         if not self.args.currency:

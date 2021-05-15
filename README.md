@@ -185,14 +185,6 @@ You can optionally include a label that will assign the address to a separate wa
 $ tilt create <currency> [label]
 ```
 
-### Create Unused Address/Key Pair
-
-This command creates "unused" addresses and private keys for the specified currency. These addresses are registered with Tilt but they are not immediately monitored. In the event that your local wallet service is offline, these addresses will be used by any calls to the create\_address API method and will then become monitored. You can create up to 10 unused addresses at a time.
-
-```
-$ tilt create-unused <currency> [quantity]
-```
-
 ### Display Wallet Balance
 
 This command displays the total of all unspent transactions for the specified currency, including all labelled and unlabelled addresses. You can optionally specify the number of confirmations required for a transaction to be included in the balance.
@@ -255,6 +247,40 @@ This command will display real-time activity between the Tilt service and your l
 
 ```
 $ tilt monitor
+```
+
+### Create Unused Address/Key Pair
+
+This command creates "unused" addresses and private keys for the specified currency. These addresses are registered with Tilt but they are not immediately monitored. In the event that your local wallet service is offline, these addresses will be used by any calls to the create\_address API method and will then become monitored. You can create up to 100 unused addresses at a time.
+
+```
+$ tilt create-unused <currency> [quantity]
+```
+
+### Import Unused Addresses
+
+This command imports "unused" addresses for the specified currency. These addresses are registered with Tilt but they are not immediately monitored. They are not stored locally and will not be displayed with `tilt list`. In the event that your local wallet service is offline, these addresses will be used by any calls to the create\_address API method and will then become monitored. You can import up to 100 unused addresses at a time.
+
+With this command it is possible to use Tilt with air gapped cold wallets. You can pre-generate 100s or 1000s of address/key pairs on a computer not connected to the internet, and then use this command to import the addresses.
+
+```
+$ tilt import-unused <currency> <filename>
+```
+
+### List Unused Addresses
+
+List all of the "unused" addresses that have been registered with Tilt for a given currency.
+
+```
+$ tilt list-unused <currency>
+```
+
+### Destroy Unused Addresses
+
+Destroy all of the "unused" addresses that have been registered with Tilt for a given currency. This will not remove wallet files created by `tilt create-unused` but it will unregister all "unused" addresses.
+
+```
+$ tilt destroy-unused <currency>
 ```
 
 ### Freeze
