@@ -1,4 +1,4 @@
-# Tilt - Cryptocurrency Payments Platform - Digital Product Deilvery Example
+# Tilt - Cryptocurrency Payments Platform - Digital Product Delivery Example
 
 ## E-Book Store
 
