@@ -1,5 +1,9 @@
 # Tilt - Cryptocurrency Payments Platform
 
+## Status
+
+Jan 2023: The Tilt service has been discontinued and the API is no longer publicly available.
+
 ## Overview
 
 Tilt enables you to easily accept cryptocurrencies from your website or app while retaining control of your private keys.
